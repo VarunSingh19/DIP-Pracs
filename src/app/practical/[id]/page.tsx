@@ -596,19 +596,26 @@ type Props = {
   params: { id: string }
 }
 
-export default async function PracticalPage({ params }: { params: { id: string } }) {
-  const id = Number(params.id);
+export default async function PracticalPage({
+  params,
+}: {
+  // Here we type params as a Promise that resolves to an object with id.
+  params: Promise<{ id: string }>
+}) {
+  // Await params before using it.
+  const { id } = await params;
+  const practicalId = Number(id);
 
-  if (!id || id < 1 || id > 10 || !practicals[id as keyof typeof practicals]) {
+  if (!practicalId || practicalId < 1 || practicalId > 10 || !practicals[practicalId as keyof typeof practicals]) {
     notFound();
   }
 
-  const practical = practicals[id as keyof typeof practicals];
+  const practical = practicals[practicalId as keyof typeof practicals];
 
   return (
     <div className="space-y-6">
       <h1 className="text-4xl font-bold tracking-tight">
-        Practical {id}: {practical.title}
+        Practical {practicalId}: {practical.title}
       </h1>
       <p className="text-xl text-muted-foreground">
         {practical.description}
@@ -639,7 +646,7 @@ export default async function PracticalPage({ params }: { params: { id: string }
                   language="matlab"
                   title="Scilab Code"
                 />
-                <RunButton practicalNumber={id} />
+                <RunButton practicalNumber={practicalId} />
               </div>
             </TabsContent>
           </Tabs>
