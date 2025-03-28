@@ -596,7 +596,7 @@ type Props = {
   params: { id: string }
 }
 
-export default function PracticalPage({ params }: Props) {
+export default async function PracticalPage({ params }: { params: { id: string } }) {
   const id = Number(params.id);
 
   if (!id || id < 1 || id > 10 || !practicals[id as keyof typeof practicals]) {
@@ -607,8 +607,12 @@ export default function PracticalPage({ params }: Props) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-4xl font-bold tracking-tight">Practical {id}: {practical.title}</h1>
-      <p className="text-xl text-muted-foreground">{practical.description}</p>
+      <h1 className="text-4xl font-bold tracking-tight">
+        Practical {id}: {practical.title}
+      </h1>
+      <p className="text-xl text-muted-foreground">
+        {practical.description}
+      </p>
 
       <Card>
         <CardHeader>
